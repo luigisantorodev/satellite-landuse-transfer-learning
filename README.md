@@ -2,7 +2,7 @@
 
 ## What This Project Does
 
-This project classifies satellite imagery into 10 land use and land cover categories — forests, highways, residential areas, rivers, and more — by adapting a CNN that was never trained on satellite images in the first place. Instead of training a network from scratch (as in the previous computer vision project in this series), this project uses **transfer learning**: starting from a model pre-trained on millions of everyday photographs, and adapting it to a visually very different domain with a fraction of the data and compute a from-scratch approach would require.
+This project classifies satellite imagery into 10 land use and land cover categories — forests, highways, residential areas, rivers, and more — by adapting a CNN that was never trained on satellite images in the first place. Instead of training a network from scratch, this project uses **transfer learning**: starting from a model pre-trained on millions of everyday photographs, and adapting it to a visually very different domain with a fraction of the data and compute a from-scratch approach would require.
 
 ---
 
