@@ -2,7 +2,7 @@
 
 ## What This Project Does
 
-This project classifies satellite imagery into 10 land use and land cover categories — forests, highways, residential areas, rivers, and more — by adapting a CNN that was never trained on satellite images in the first place. Instead of training a network from scratch, this project uses **transfer learning**: starting from a model pre-trained on millions of everyday photographs, and adapting it to a visually very different domain with a fraction of the data and compute a from-scratch approach would require.
+This project classifies satellite imagery into 10 land use and land cover categories — forests, highways, residential areas, rivers, and more — by adapting a CNN that was never trained on satellite images in the first place. Instead of training a network from scratch (as in the previous computer vision project in this series), this project uses **transfer learning**: starting from a model pre-trained on millions of everyday photographs, and adapting it to a visually very different domain with a fraction of the data and compute a from-scratch approach would require.
 
 ---
 
@@ -10,11 +10,13 @@ This project classifies satellite imagery into 10 land use and land cover catego
 
 EuroSAT, a dataset of 27,000 RGB satellite images (64x64 pixels) captured by the European Space Agency's Sentinel-2 satellite, labeled into 10 land use classes: AnnualCrop, Forest, HerbaceousVegetation, Highway, Industrial, Pasture, PermanentCrop, Residential, River, and SeaLake. The dataset was split 80/20 into training (21,600 images) and test (5,400 images) sets; class balance was verified explicitly afterward, confirming each class was represented at nearly identical proportions in both splits (e.g., the smallest class, Pasture, made up 7.4% of training and 7.3% of test).
 
+<!-- sample_classes.png -->
+
 ---
 
 ## Step 1: Why Transfer Learning Instead of Training From Scratch
 
-Training a CNN from scratch requires the network to learn everything from zero, including the most basic visual building blocks: edge detectors, texture filters, simple shape recognizers. This demands large amounts of data and compute to learn well.
+Training a CNN from scratch — as the previous computer vision project in this series did — requires the network to learn everything from zero, including the most basic visual building blocks: edge detectors, texture filters, simple shape recognizers. This demands large amounts of data and compute to learn well.
 
 The key insight behind transfer learning is that these low-level visual features are remarkably similar across very different problems — a filter that detects vertical edges is useful whether the task is recognizing cats or classifying satellite terrain. A model pre-trained on ImageNet (1.2 million photographs, 1,000 categories) has already learned excellent general-purpose visual features. Rather than re-learning them, this project reuses them directly.
 
@@ -47,9 +49,11 @@ On the held-out test set, the model reached **93.19% accuracy**, with macro and 
 
 ## Step 4: Where the Model Struggles
 
-Two classes stood out as harder to distinguish from each other: **Highway** and **River** were the model's weakest pair, with 27 highway images misclassified as river and 38 river images misclassified as highway — both scoring an F1 around 0.87, noticeably below the other eight classes.
+Two classes stood out as harder to distinguish from each other: **Highway** and **River** were the model's weakest pair. In the confusion matrix below, 21 highway images were misclassified as river, while 52 river images were misclassified as highway — a clearly asymmetric confusion, with river being mistaken for highway more than twice as often as the reverse.
 
-A plausible explanation, rather than a modeling flaw: both highways and rivers tend to appear in satellite imagery as long, narrow, elongated features cutting across the frame — a geometric similarity that could reasonably confuse a model relying on general visual features rather than domain-specific cues (e.g., water reflectance patterns, road markings) that a model trained from scratch directly on satellite data might learn to exploit more precisely.
+<!-- confusion_matrix.png -->
+
+A plausible explanation, rather than a modeling flaw: both highways and rivers tend to appear in satellite imagery as long, narrow, elongated features cutting across the frame — a geometric similarity that could reasonably confuse a model relying on general visual features rather than domain-specific cues (e.g., water reflectance patterns, road markings) that a model trained from scratch directly on satellite data might learn to exploit more precisely. The asymmetry itself is also intuitive: a river's winding, irregular path more easily resembles a highway's straight or curved lines than the reverse.
 
 ---
 
